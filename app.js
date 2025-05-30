@@ -56,6 +56,10 @@ app.put("/places/:id", async (req, res) => {
   await Place.findByIdAndUpdate(req.params.id, { ...req.body.place });
   res.redirect("/places");
 });
+app.delete("/places/:id", async (req, res) => {
+  await Place.findByIdAndDelete(req.params.id);
+  res.redirect("/places");
+});
 
 // app.get("/seed/place", async (req, res) => {
 //   const place = new Place({
