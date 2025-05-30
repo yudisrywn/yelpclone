@@ -1,3 +1,4 @@
+const ejsMate = require("ejs-mate");
 const express = require("express");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
@@ -7,6 +8,7 @@ const app = express();
 
 //model
 const Place = require("./models/place");
+const { title } = require("process");
 
 //connect ke database
 mongoose
@@ -19,6 +21,7 @@ mongoose
   });
 
 //gunakan view engine ejs
+app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -44,8 +47,9 @@ app.post("/places", async (req, res) => {
 });
 
 app.get("/places/:id", async (req, res) => {
+  title = "Detail Tempat Wisata";
   const place = await Place.findById(req.params.id);
-  res.render("places/show", { place });
+  res.render("places/show", { place, title });
 });
 
 app.get("/places/:id/edit", async (req, res) => {
