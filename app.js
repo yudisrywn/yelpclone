@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const methodOverride = require("method-override");
 const ejs = require("ejs");
 const path = require("path");
 const app = express();
@@ -23,6 +24,7 @@ app.set("views", path.join(__dirname, "views"));
 
 //middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -38,12 +40,21 @@ app.get("/places/create", async (req, res) => {
 app.post("/places", async (req, res) => {
   const place = new Place(req.body.place);
   await place.save();
-  res.redirect('/places');
+  res.redirect("/places");
 });
 
 app.get("/places/:id", async (req, res) => {
   const place = await Place.findById(req.params.id);
   res.render("places/show", { place });
+});
+
+app.get("/places/:id/edit", async (req, res) => {
+  const place = await Place.findById(req.params.id);
+  res.render("places/edit", { place });
+});
+app.put("/places/:id", async (req, res) => {
+  await Place.findByIdAndUpdate(req.params.id, { ...req.body.place });
+  res.redirect("/places");
 });
 
 // app.get("/seed/place", async (req, res) => {
