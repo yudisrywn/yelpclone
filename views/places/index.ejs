@@ -7,9 +7,10 @@
   </head>
   <body>
     <h1>All Places</h1>
+    <a href="/places/create">Add Place</a>
     <ul>
       <% places.forEach(place => { %>
-      <li><%= place.title %></li>
+      <li><a href="/places/<%= place._id %>"><%= place.title %></a></li>
       <% }) %>
     </ul>
   </body>
