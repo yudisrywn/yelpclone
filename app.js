@@ -25,16 +25,16 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/seed/place", async (req, res) => {
-  const place = new Place({
-    title: "Taman Nasional Bromo",
-    price: "Rp. 100.000",
-    description: "Tempat wisata yang indah di Jawa Timur",
-    location: "Jawa Timur, Indonesia",
-  });
-  await place.save();
-  res.send(place);
-});
+// app.get("/seed/place", async (req, res) => {
+//   const place = new Place({
+//     title: "Taman Nasional Bromo",
+//     price: "Rp. 100.000",
+//     description: "Tempat wisata yang indah di Jawa Timur",
+//     location: "Jawa Timur, Indonesia",
+//   });
+//   await place.save();
+//   res.send(place);
+// });
 
 app.listen(3000, () => {
   console.log("Server running on http://127.0.0.1:3000");
