@@ -47,9 +47,8 @@ app.post("/places", async (req, res) => {
 });
 
 app.get("/places/:id", async (req, res) => {
-  title = "Detail Tempat Wisata";
   const place = await Place.findById(req.params.id);
-  res.render("places/show", { place, title });
+  res.render("places/show", { place });
 });
 
 app.get("/places/:id/edit", async (req, res) => {
