@@ -12,6 +12,9 @@ const app = express();
 //model
 const Place = require("./models/place");
 
+// schema
+const placeSchema  = require("./schemas/placeSchema");
+
 //connect ke database
 mongoose
   .connect("mongodb://127.0.0.1/yelpclone")
@@ -30,6 +33,15 @@ app.set("views", path.join(__dirname, "views"));
 //middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+const validatePlace = (req, res, next) => {
+  const { error } = placeSchema.validate(req.body);
+  if (error) {
+    const message = error.details.map((el) => el.message).join(",");
+    return next(new ExpressError(message, 400));
+  } else {
+    next();
+  }
+};
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -45,23 +57,8 @@ app.get("/places/create", async (req, res) => {
 });
 app.post(
   "/places",
+  validatePlace,
   wrapAsync(async (req, res, next) => {
-    const placeSchema = Joi.object({
-      place: Joi.object({
-        title: Joi.string().required(),
-        location: Joi.string().required(),
-        description: Joi.string().required(),
-        price: Joi.number().min(0).required(),
-        image: Joi.string().required(),
-      }).required(),
-    });
-
-    const { error } = placeSchema.validate(req.body);
-    if (error) {
-      console.log(error);
-      return next(new ExpressError(error, 400));
-    }
-
     const place = new Place(req.body.place);
     await place.save();
     res.redirect("/places");
@@ -77,14 +74,21 @@ app.get("/places/:id/edit", async (req, res) => {
   const place = await Place.findById(req.params.id);
   res.render("places/edit", { place });
 });
-app.put("/places/:id", async (req, res) => {
-  await Place.findByIdAndUpdate(req.params.id, { ...req.body.place });
-  res.redirect("/places");
-});
-app.delete("/places/:id", async (req, res) => {
-  await Place.findByIdAndDelete(req.params.id);
-  res.redirect("/places");
-});
+app.put(
+  "/places/:id",
+  validatePlace,
+  wrapAsync(async (req, res) => {
+    await Place.findByIdAndUpdate(req.params.id, { ...req.body.place });
+    res.redirect("/places");
+  })
+);
+app.delete(
+  "/places/:id",
+  wrapAsync(async (req, res) => {
+    await Place.findByIdAndDelete(req.params.id);
+    res.redirect("/places");
+  })
+);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page not found", 404));
