@@ -11,9 +11,11 @@ const app = express();
 
 //model
 const Place = require("./models/place");
+const Review = require("./models/review");
 
 // schema
-const placeSchema  = require("./schemas/placeSchema");
+const { placeSchema } = require("./schemas/placeSchema");
+const { reviewSchema } = require("./schemas/reviewSchema");
 
 //connect ke database
 mongoose
@@ -35,6 +37,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 const validatePlace = (req, res, next) => {
   const { error } = placeSchema.validate(req.body);
+  if (error) {
+    const message = error.details.map((el) => el.message).join(",");
+    return next(new ExpressError(message, 400));
+  } else {
+    next();
+  }
+};
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
   if (error) {
     const message = error.details.map((el) => el.message).join(",");
     return next(new ExpressError(message, 400));
@@ -66,7 +77,7 @@ app.post(
 );
 
 app.get("/places/:id", async (req, res) => {
-  const place = await Place.findById(req.params.id);
+  const place = await Place.findById(req.params.id).populate("reviews");
   res.render("places/show", { place });
 });
 
@@ -87,6 +98,19 @@ app.delete(
   wrapAsync(async (req, res) => {
     await Place.findByIdAndDelete(req.params.id);
     res.redirect("/places");
+  })
+);
+
+app.post(
+  "/places/:id/reviews",
+  validateReview,
+  wrapAsync(async (req, res) => {
+    const review = new Review(req.body.review);
+    const place = await Place.findById(req.params.id);
+    place.reviews.push(review);
+    await review.save();
+    await place.save();
+    res.redirect(`/places/${req.params.id}`);
   })
 );
 
