@@ -11,6 +11,7 @@ const Review = require("../models/review");
 
 // schema
 const { reviewSchema } = require("../schemas/reviewSchema");
+const isAuth = require("../middlewares/isAuth");
 
 // middleware
 const validateReview = (req, res, next) => {
@@ -26,6 +27,7 @@ const validateReview = (req, res, next) => {
 // routes
 router.post(
   "/",
+  isAuth,
   isValidObjectId("/places"),
   validateReview,
   wrapAsync(async (req, res) => {
@@ -41,6 +43,7 @@ router.post(
 
 router.delete(
   "/:review_id",
+  isAuth,
   isValidObjectId("/places"),
   wrapAsync(async (req, res) => {
     const { place_id, review_id } = req.params;
