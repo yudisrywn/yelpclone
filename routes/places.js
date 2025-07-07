@@ -1,6 +1,7 @@
 const express = require("express");
 const ExpressError = require("../utils/ExpressError");
 const wrapAsync = require("../utils/wrapAsync");
+const isValidObjectId = require("../middlewares/isValidObjectId");
 
 const router = express.Router();
 
@@ -39,17 +40,22 @@ router.post(
   })
 );
 
-router.get("/:id", async (req, res) => {
-  const place = await Place.findById(req.params.id).populate("reviews");
-  res.render("places/show", { place });
-});
+router.get(
+  "/:id",
+  isValidObjectId("/places"),
+  wrapAsync(async (req, res) => {
+    const place = await Place.findById(req.params.id).populate("reviews");
+    res.render("places/show", { place });
+  })
+);
 
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", isValidObjectId("/places"), async (req, res) => {
   const place = await Place.findById(req.params.id);
   res.render("places/edit", { place });
 });
 router.put(
   "/:id",
+  isValidObjectId("/places"),
   validatePlace,
   wrapAsync(async (req, res) => {
     await Place.findByIdAndUpdate(req.params.id, { ...req.body.place });
@@ -59,6 +65,7 @@ router.put(
 );
 router.delete(
   "/:id",
+  isValidObjectId("/places"),
   wrapAsync(async (req, res) => {
     await Place.findByIdAndDelete(req.params.id);
     req.flash("error_msg", "succesfull delete Place");
