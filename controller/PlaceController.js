@@ -6,7 +6,14 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.store = async (req, res, next) => {
+  // const images = req.files.map((file) => ({
+  //   url: file.path,
+  //   filename: file.filename,
+  // }));
+
   const place = new Place(req.body.place);
+  place.author = req.user._id;
+  // places.images = images;
   await place.save();
   req.flash("success_msg", "succesfull added Place");
   res.redirect("/places");
