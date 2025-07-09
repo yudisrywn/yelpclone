@@ -3,36 +3,14 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
 
-const User = require("../models/user");
+// Controller
+const AuthController = require("../controller/AuthController");
 
-router.get("/register", async (req, res) => {
-  res.render("auth/register");
-});
+router.get("/register", AuthController.registerForm);
 
-router.post(
-  "/register",
-  wrapAsync(async (req, res) => {
-    try {
-      const { email, username, password } = req.body;
-      const user = new User({ email, username });
-      const registerUser = await User.register(user, password);
-      req.login(registerUser, (err) => {
-        if (err) {
-          return next(err);
-        }
-        req.flash("success_msg", "You are register and logged");
-        res.redirect("/places");
-      });
-    } catch (error) {
-      req.flash("error_msg", error.message);
-      res.redirect("/register");
-    }
-  })
-);
+router.post("/register", wrapAsync(AuthController.register));
 
-router.get("/login", async (req, res) => {
-  res.render("auth/login");
-});
+router.get("/login", AuthController.loginForm);
 
 router.post(
   "/login",
@@ -43,20 +21,9 @@ router.post(
       msg: "Invalid username or password",
     },
   }),
-  (req, res) => {
-    req.flash("success_msg", "success login");
-    res.redirect("/places");
-  }
+  AuthController.login
 );
 
-router.post("/logout", (req, res) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    req.flash("success_msg", "You're logout");
-    res.redirect("/login");
-  });
-});
+router.post("/logout", AuthController.logout);
 
 module.exports = router;

@@ -6,10 +6,11 @@ const isAuth = require("../middlewares/isAuth");
 const { isAuthorPlace } = require("../middlewares/isAuthor");
 const router = express.Router();
 
-// models
-const Place = require("../models/place");
 // schema
 const { placeSchema } = require("../schemas/placeSchema");
+
+// controller
+const PlaceController = require("../controller/PlaceController");
 
 // middleware
 const validatePlace = (req, res, next) => {
@@ -22,51 +23,21 @@ const validatePlace = (req, res, next) => {
   }
 };
 
-router.get("/", async (req, res) => {
-  const places = await Place.find();
-  res.render("places/index", { places });
-});
+router.get("/", wrapAsync(PlaceController.index));
 
 router.get("/create", isAuth, async (req, res) => {
   res.render("places/create");
 });
-router.post(
-  "/",
-  isAuth,
-  validatePlace,
-  wrapAsync(async (req, res, next) => {
-    const place = new Place(req.body.place);
-    await place.save();
-    req.flash("success_msg", "succesfull added Place");
-    res.redirect("/places");
-  })
-);
+router.post("/", isAuth, validatePlace, wrapAsync(PlaceController.store));
 
-router.get(
-  "/:id",
-  isValidObjectId("/places"),
-  wrapAsync(async (req, res) => {
-    const place = await Place.findById(req.params.id)
-      .populate({
-        path: "reviews",
-        populate: {
-          path: "author",
-        },
-      })
-      .populate("author");
-    res.render("places/show", { place });
-  })
-);
+router.get("/:id", isValidObjectId("/places"), wrapAsync(PlaceController.show));
 
 router.get(
   "/:id/edit",
   isAuth,
   isAuthorPlace,
   isValidObjectId("/places"),
-  async (req, res) => {
-    const place = await Place.findById(req.params.id);
-    res.render("places/edit", { place });
-  }
+  PlaceController.edit
 );
 router.put(
   "/:id",
@@ -74,22 +45,14 @@ router.put(
   isAuthorPlace,
   isValidObjectId("/places"),
   validatePlace,
-  wrapAsync(async (req, res) => {
-    await Place.findByIdAndUpdate(req.params.id, { ...req.body.place });
-    req.flash("success_msg", "succesfull updated Place");
-    res.redirect(`/places/${req.params.id}`);
-  })
+  wrapAsync(PlaceController.update)
 );
 router.delete(
   "/:id",
   isAuth,
   isAuthorPlace,
   isValidObjectId("/places"),
-  wrapAsync(async (req, res) => {
-    await Place.findByIdAndDelete(req.params.id);
-    req.flash("error_msg", "succesfull delete Place");
-    res.redirect("/places");
-  })
+  wrapAsync(PlaceController.delete)
 );
 
 module.exports = router;
