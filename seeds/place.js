@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Place = require("../models/place");
-const hereMaps = require("../utils/hereMaps");
+const { geometry } = require("../utils/hereMaps");
 
 mongoose
   .connect("mongodb://127.0.0.1/yelpclone")
@@ -14,29 +14,11 @@ mongoose
 async function seedPlaces() {
   const places = [
     {
-      title: "Taman Mini Indonesia Indah",
-      price: 20000,
-      description:
-        "Taman hiburan keluarga dengan berbagai replika bangunan dari seluruh Indonesia",
-      location: "Taman Mini Indonesia Indah, Jakarta",
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    },
-    {
       title: "Pantai Kuta",
       price: 0,
       description:
         "Pantai yang terkenal di Bali dengan pemandangan sunset yang indah",
-      location: "Pantai Kuta, Kuta, Badung Regency, Bali",
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      title: "Borobudur",
-      price: 0,
-      description:
-        "Candi Buddha terbesar di dunia yang terletak di Magelang, Jawa Tengah",
-      location: "Borobudur, Magelang, Central Java",
+      location: "Pantai Kuta, Kuta, Badung Regency, Bali, Indonesia",
       image:
         "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
     },
@@ -54,7 +36,7 @@ async function seedPlaces() {
       price: 0,
       description:
         "Jalan utama di Yogyakarta dengan berbagai toko dan kuliner khas",
-      location: "Jl. Malioboro, Yogyakarta City, Special Region of Yogyakarta",
+      location: "Malioboro, Yogyakarta City, Special Region of Yogyakarta",
       image: "https://source.unsplash.com/collection/880012/1280x720",
     },
     {
@@ -66,14 +48,6 @@ async function seedPlaces() {
       image: "https://source.unsplash.com/collection/880012/1280x720",
     },
     {
-      title: "Bukit Bintang",
-      price: 0,
-      description: "Kawasan perbelanjaan dan hiburan di Kuala Lumpur, Malaysia",
-      location:
-        "Bukit Bintang, Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
       title: "Candi Prambanan",
       price: 25000,
       description:
@@ -82,60 +56,11 @@ async function seedPlaces() {
       image: "https://source.unsplash.com/collection/880012/1280x720",
     },
     {
-      title: "Danau Toba",
-      price: 0,
-      description:
-        "Danau vulkanik terbesar di Indonesia yang terletak di Sumatera Utara",
-      location: "Danau Toba, North Sumatra",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
-      title: "Kawah Ijen",
-      price: 100000,
-      description:
-        "Kawah vulkanik dengan fenomena blue fire di Banyuwangi, Jawa Timur",
-      location: "Kawah Ijen, Banyuwangi, East Java",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
       title: "Pantai Sanur",
       price: 0,
       description:
         "Pantai di Bali yang cocok untuk berenang dan melihat matahari terbit",
       location: "Pantai Sanur, Denpasar, Bali",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-
-    {
-      title: "Candi Borobudur",
-      price: 25000,
-      description:
-        "Candi Buddha terbesar di dunia yang terletak di Magelang, Jawa Tengah",
-      location: "Candi Borobudur, Borobudur, Magelang, Central Java",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
-      title: "Pulau Komodo",
-      price: 5000000,
-      description:
-        "Pulau di Indonesia yang terkenal dengan komodo, hewan terbesar di dunia",
-      location: "Pulau Komodo, East Nusa Tenggara",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
-      title: "Taman Nasional Gunung Rinjani",
-      price: 150000,
-      description:
-        "Taman nasional yang terletak di Lombok dan memiliki gunung tertinggi kedua di Indonesia",
-      location: "Taman Nasional Gunung Rinjani, Lombok, West Nusa Tenggara",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
-      title: "Bukit Tinggi",
-      price: 0,
-      description:
-        "Kota kecil yang terletak di Sumatera Barat dengan arsitektur khas Eropa",
-      location: "Bukit Tinggi, West Sumatra",
       image: "https://source.unsplash.com/collection/880012/1280x720",
     },
     {
@@ -147,27 +72,11 @@ async function seedPlaces() {
       image: "https://source.unsplash.com/collection/880012/1280x720",
     },
     {
-      title: "Taman Safari Indonesia",
-      price: 0,
-      description:
-        "Taman hiburan keluarga dengan berbagai satwa liar di Cisarua, Bogor",
-      location: "Taman Safari Indonesia, Cisarua, West Java",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
       title: "Gunung Merbabu",
       price: 50000,
       description:
         "Gunung yang terletak di Jawa Tengah dengan pemandangan matahari terbit yang indah",
-      location: "Gunung Merbabu, Central Java",
-      image: "https://source.unsplash.com/collection/880012/1280x720",
-    },
-    {
-      title: "Pulau Lombok",
-      price: 0,
-      description:
-        "Pulau di Indonesia yang terkenal dengan keindahan pantainya",
-      location: "Pulau Lombok, West Nusa Tenggara",
+      location: "Gunung Merbabu, Central Java, Indonesia",
       image: "https://source.unsplash.com/collection/880012/1280x720",
     },
     {
@@ -180,31 +89,25 @@ async function seedPlaces() {
     },
   ];
 
-  const newPlace = await Promise.all(
-    places.map(async (place) => {
-      let geoData = await hereMaps.geometry(place.location);
-      if (!geoData) {
-        geoData = { type: "Point", coordinates: [116.32883, -8.90952] };
-      }
-      return {
-        ...place,
-        author: "643d36579773b789e91ef660",
-        images: {
-          url: "public\\images\\image-1681876521153-260851838.jpg",
-          filename: "image-1681876521153-260851838.jpg",
-        },
-        geometry: { ...geoData },
-      };
-    })
-  );
-
   try {
-    const newPlace = places.map(place => { 
-      return {...place, author: "686b646e1abbefc68db76a4b", images: {
-        url: "public\\images\\image-1752245071540-764287881.jpg",
-        filename: "image-1752245071540-764287881.jpg",
-      }}
-    })
+    const newPlace = await Promise.all(
+      places.map(async (place) => {
+        let geoData = await geometry(place.location);
+        if (!geoData) {
+          geoData = { type: "Point", coordinates: [116.32883, -8.90952] };
+        }
+        return {
+          ...place,
+          author: "686b646e1abbefc68db76a4b",
+          images: {
+            url: "public\\images\\image-1752245071540-764287881.jpg",
+            filename: "image-1752245071540-764287881.jpg",
+          },
+          geometry: geoData,
+        };
+      })
+    );
+
     await Place.deleteMany({});
     await Place.insertMany(newPlace);
     console.log("Data berhasil disimpan");

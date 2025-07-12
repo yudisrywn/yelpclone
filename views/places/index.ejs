@@ -1,12 +1,19 @@
-<% layout('layouts/app') %> <% places.forEach(place => { %>
+<% layout('layouts/app') %>
+<% for(const place of places) { %>
 <div class="card mb-3">
   <div class="row">
     <div class="col-md-4">
+      <% if(place.images.length){ %>
       <img
+        class="img-fluid"
         src="/images/<%= place.images[0].filename %>"
-        alt="<%= place.title %>"
-        srcset=""
-        class="img-fluid" />
+        alt="" />
+      <% } else { %>
+      <img
+        class="img-fluid"
+        src="https://source.unsplash.com/collection/880012/1280x720"
+        alt="" />
+      <% } %>
     </div>
     <div class="col-md-8">
       <div class="card-body">
@@ -15,9 +22,11 @@
         <p class="card-text">
           <small class="text-secondary"><%= place.location %></small>
         </p>
-        <a href="/places/<%= place._id %>" class="btn btn-primary">View <%= place.title %></a>
+        <a href="/places/<%= place._id %>" class="btn btn-primary"
+          >View <%= place.title %></a
+        >
       </div>
     </div>
   </div>
 </div>
-<% }) %>
+<% } %>

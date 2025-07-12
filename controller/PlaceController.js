@@ -1,5 +1,6 @@
 const Place = require("../models/place");
 const fs = require("fs");
+const { geometry } = require("../utils/hereMaps");
 const ExpressError = require("../utils/ExpressError");
 
 module.exports.index = async (req, res) => {
@@ -13,9 +14,12 @@ module.exports.store = async (req, res, next) => {
     filename: file.filename,
   }));
 
+  const geoData = await geometry(req.body.place.location);
+
   const place = new Place(req.body.place);
   place.author = req.user._id;
   place.images = images;
+  place.geometry = geoData;
 
   await place.save();
 
@@ -41,9 +45,12 @@ module.exports.edit = async (req, res) => {
 };
 
 module.exports.update = async (req, res) => {
+  const geoData = await geometry(req.body.place.location);
+
   const place = await Place.findByIdAndUpdate(req.params.id, {
-    ...req.body.place,
+    ...req.body.place, geometry: geoData,
   });
+
 
   if (req.files && req.files.length > 0) {
     place.images.forEach((image) => {
