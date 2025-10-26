@@ -1,6 +1,6 @@
 # Yelp Clone - Platform Review Tempat Wisata
 
-Aplikasi web clone Yelp yang dibangun dengan Node.js, Express, dan MongoDB. Platform ini memungkinkan pengguna untuk berbagi, mereview, dan menemukan tempat-tempat menarik dengan integrasi peta interaktif.
+Aplikasi web clone Yelp yang dibangun dengan Node.js, Express, dan MongoDB.
 
 ## 📋 Fitur
 
@@ -163,37 +163,5 @@ yelpclone/
 │   └── places/
 └── app.js              # Main application file
 ```
-
-## 🚀 Penggunaan
-
-### Membuat Akun
-
-1. Klik "Register" di navbar
-2. Isi form dengan email, username, dan password
-3. Login dengan kredensial yang sudah dibuat
-
-### Menambah Tempat
-
-1. Login ke akun Anda
-2. Klik "New Place" atau "Tambah Tempat"
-3. Isi form dengan informasi tempat:
-   - Judul
-   - Harga
-   - Deskripsi
-   - Lokasi (alamat lengkap)
-   - Upload gambar (multiple)
-4. Submit form
-
-### Memberikan Review
-
-1. Buka halaman detail tempat
-2. Scroll ke bagian review
-3. Berikan rating dan komentar
-4. Submit review
-
-### Edit/Delete
-
-- Anda hanya bisa edit/delete tempat dan review yang Anda buat sendiri
-- Tombol edit/delete hanya muncul jika Anda adalah author
 
 **Happy Coding! 🚀**
