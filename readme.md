@@ -8,7 +8,7 @@ Aplikasi web clone Yelp yang dibangun dengan Node.js, Express, dan MongoDB.
 
   - Register dan Login dengan Passport.js
   - Session management
-  - Authorization untuk Create, Update, Delete
+  - Authorization
 
 - **Manajemen Tempat (Places)**
 
