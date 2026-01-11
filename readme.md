@@ -30,23 +30,11 @@ Aplikasi web clone Yelp yang dibangun dengan Node.js, Express, dan MongoDB.
 
 ## 🛠️ Teknologi yang Digunakan
 
-### Backend
-
 - **Node.js**
 - **Express.js**
 - **MongoDB**
 
 ## 📦 Instalasi
-
-### Prerequisites
-
-Pastikan sudah terinstall:
-
-- Node.js (v14 atau lebih baru)
-- MongoDB (v4 atau lebih baru)
-- npm atau yarn
-
-### Langkah Instalasi
 
 1. **Clone repository**
 
@@ -69,12 +57,6 @@ Pastikan sudah terinstall:
    mongodb://127.0.0.1/yelpclone
    ```
 
-   Jika menggunakan MongoDB Atlas atau connection string berbeda, edit di `app.js`:
-
-   ```javascript
-   mongoose.connect("mongodb://127.0.0.1/yelpclone");
-   ```
-
 4. **Setup HERE Maps API Key**
 
    Edit file `utils/hereMaps.js` dan ganti dengan API key Anda:
@@ -93,75 +75,3 @@ Pastikan sudah terinstall:
      // ...
    });
    ```
-
-6. **Seed Database (Opsional)**
-
-   Jika ingin mengisi database dengan data contoh:
-
-   ```bash
-   node seeds/place.js
-   ```
-
-7. **Jalankan aplikasi**
-
-   ```bash
-   node app.js
-   ```
-
-   Atau gunakan nodemon untuk development:
-
-   ```bash
-   npm install -g nodemon
-   nodemon app.js
-   ```
-
-8. **Akses aplikasi**
-
-   Buka browser dan akses:
-
-   ```
-   http://127.0.0.1:3000
-   ```
-
-## 📁 Struktur Folder
-
-```
-yelpclone/
-├── configs/              # Konfigurasi (multer, dll)
-├── controller/           # Controller untuk handle logic
-│   ├── AuthController.js
-│   ├── PlaceController.js
-│   └── ReviewController.js
-├── middlewares/          # Custom middlewares
-│   ├── isAuth.js         # Authentication check
-│   ├── isAuthor.js       # Authorization check
-│   ├── isValidObjectId.js
-│   └── validator.js      # Joi validation
-├── models/               # Mongoose models
-│   ├── place.js
-│   ├── review.js
-│   └── user.js
-├── public/               # Static files
-│   ├── css/
-│   ├── images/          # Uploaded images
-│   └── js/
-├── routes/              # Express routes
-│   ├── auth.js
-│   ├── places.js
-│   └── reviews.js
-├── schemas/             # Joi validation schemas
-│   ├── placeSchema.js
-│   └── reviewSchema.js
-├── seeds/               # Database seeder
-├── utils/               # Utility functions
-│   ├── ExpressError.js
-│   ├── hereMaps.js
-│   └── wrapAsync.js
-├── views/               # EJS templates
-│   ├── layouts/
-│   ├── auth/
-│   └── places/
-└── app.js              # Main application file
-```
-
-**Happy Coding! 🚀**
